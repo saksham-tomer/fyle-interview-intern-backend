@@ -1,3 +1,4 @@
+# /core/apis/assignments/schema.py
 from marshmallow import Schema, EXCLUDE, fields, post_load
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from marshmallow_enum import EnumField
@@ -23,7 +24,6 @@ class AssignmentSchema(SQLAlchemyAutoSchema):
     def initiate_class(self, data_dict, many, partial):
         # pylint: disable=unused-argument,no-self-use
         return Assignment(**data_dict)
-
 
 class AssignmentSubmitSchema(Schema):
     class Meta:

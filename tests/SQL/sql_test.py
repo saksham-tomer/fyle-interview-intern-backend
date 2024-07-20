@@ -1,3 +1,4 @@
+# /tests/SQL/sql_test.py
 import random
 from sqlalchemy import text
 
@@ -51,7 +52,7 @@ def create_n_graded_assignments_for_teacher(number: int = 0, teacher_id: int = 1
 
 
 def test_get_assignments_in_graded_state_for_each_student():
-    """Test to get graded assignments for each student"""
+    """Test to get the number of graded assignments for each student"""
 
     # Find all the assignments for student 1 and change its state to 'GRADED'
     submitted_assignments: Assignment = Assignment.filter(Assignment.student_id == 1)
@@ -59,6 +60,7 @@ def test_get_assignments_in_graded_state_for_each_student():
     # Iterate over each assignment and update its state
     for assignment in submitted_assignments:
         assignment.state = AssignmentStateEnum.GRADED  # Or any other desired state
+        # assignment.grade = random.choice(list(GradeEnum))
 
     # Flush the changes to the database session
     db.session.flush()
@@ -66,7 +68,7 @@ def test_get_assignments_in_graded_state_for_each_student():
     db.session.commit()
 
     # Define the expected result before any changes
-    expected_result = [(1, 3)]
+    expected_result = [(1, 4), (2,1)]
 
     # Execute the SQL query and compare the result with the expected result
     with open('tests/SQL/number_of_graded_assignments_for_each_student.sql', encoding='utf8') as fo:
@@ -75,7 +77,7 @@ def test_get_assignments_in_graded_state_for_each_student():
     # Execute the SQL query compare the result with the expected result
     sql_result = db.session.execute(text(sql)).fetchall()
     for itr, result in enumerate(expected_result):
-        assert result[0] == sql_result[itr][0]
+        assert result == sql_result[itr]
 
 
 def test_get_grade_A_assignments_for_teacher_with_max_grading():
